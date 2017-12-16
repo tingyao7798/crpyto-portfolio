@@ -1,0 +1,4 @@
+settings/api_keys.yml
+log/*
+*__pycache__
+coinmarketcap_cache*

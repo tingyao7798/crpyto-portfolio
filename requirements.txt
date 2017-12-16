@@ -1,0 +1,2 @@
+python-bittrex==0.2.1
+coinmarketcap==4.1.1
