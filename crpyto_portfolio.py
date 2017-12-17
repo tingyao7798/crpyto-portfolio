@@ -8,7 +8,7 @@ import yaml
 
 # self modules
 from utils.common import setup_logging
-from api import bittrex
+from api import bittrex, bitfinex
 
 
 def main():
@@ -33,10 +33,17 @@ def main():
     for exchange, auth in api_keys.items():
         if exchange == "bittrex":
             bittrex_client = bittrex.Bittrex(auth['api_key'], auth['api_secret'])
-            total_value = total_value + bittrex_client.get_wallet_value()
-        logger.info("Total crpyto worth(usd):$%s" %total_value)
+            bitrex_value = bittrex_client.get_wallet_value()
+            logger.info("Bitrex worth(USD):$%s" % bitrex_value)
+            total_value = total_value + bitrex_value
 
+        elif exchange == "bitfinex":
+            bitfinex_client = bitfinex.Bitfinex(auth['api_key'], auth['api_secret'])
+            bitfinex_value = bitfinex_client.get_wallet_value()
+            logger.info("Bitrex worth(USD):$%s" % bitfinex_value)
+            total_value = total_value + bitfinex_value
 
+    logger.info("Total crpyto worth(usd):$%s" %total_value)
 
 if __name__ == "__main__":
     main()
