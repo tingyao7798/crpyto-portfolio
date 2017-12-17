@@ -34,7 +34,7 @@ class Coinmarketcap:
                         'total_supply': '96373480.0'}]
         """
         logger = logging.getLogger(__name__)
-        logger.info("Retrieving Coinmarketcap tickers...")
+        logger.debug("Retrieving Coinmarketcap tickers...")
         client = coinmarketcap.Market()
         ticker_resp = client.ticker()
 
