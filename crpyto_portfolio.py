@@ -8,7 +8,7 @@ import yaml
 
 # self modules
 from utils.common import setup_logging
-from api import bittrex, bitfinex
+from api import bittrex, bitfinex, coinbase
 
 
 def main():
@@ -22,6 +22,9 @@ def main():
     # load the logging configuration
     setup_logging()
     logger = logging.getLogger(__name__)
+    # mute request log
+    logging.getLogger("requests").setLevel(logging.WARNING)
+    
 
     # load the api keys
     with open(args.f, 'r') as ymlfile:
@@ -32,16 +35,15 @@ def main():
 
     for exchange, auth in api_keys.items():
         if exchange == "bittrex":
-            bittrex_client = bittrex.Bittrex(auth['api_key'], auth['api_secret'])
-            bitrex_value = bittrex_client.get_wallet_value()
-            logger.info("Bitrex worth(USD):$%s" % bitrex_value)
-            total_value = total_value + bitrex_value
-
+            client = bittrex.Bittrex(auth['api_key'], auth['api_secret'])
         elif exchange == "bitfinex":
-            bitfinex_client = bitfinex.Bitfinex(auth['api_key'], auth['api_secret'])
-            bitfinex_value = bitfinex_client.get_wallet_value()
-            logger.info("Bitrex worth(USD):$%s" % bitfinex_value)
-            total_value = total_value + bitfinex_value
+            client = bitfinex.Bitfinex(auth['api_key'], auth['api_secret'])
+        elif exchange == "coinbase":
+            client = coinbase.Coinbase(auth['api_key'], auth['api_secret'])
+
+        value = client.get_wallet_value()
+        logger.info("%s worth(USD):$%s" % (exchange, value))
+        total_value = total_value + value
 
     logger.info("Total crpyto worth(usd):$%s" %total_value)
 
