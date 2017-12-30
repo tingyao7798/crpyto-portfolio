@@ -35,13 +35,14 @@ def main():
 
     for exchange, auth in api_keys.items():
         if exchange == "bittrex":
-            client = bittrex.Bittrex(auth['api_key'], auth['api_secret'])
+            client = bittrex.Bittrex(auth['key'], auth['secret'])
         elif exchange == "bitfinex":
-            client = bitfinex.Bitfinex(auth['api_key'], auth['api_secret'])
+            client = bitfinex.Bitfinex(auth['key'], auth['secret'])
         elif exchange == "coinbase":
-            client = coinbase.Coinbase(auth['api_key'], auth['api_secret'])
+            client = coinbase.Coinbase(auth['key'], auth['secret'])
 
-        value = client.get_wallet_value()
+        wallet = client.get_wallet()
+        value = client.get_wallet_value(wallet)
         logger.info("%s worth(USD):$%s" % (exchange, value))
         total_value = total_value + value
 

@@ -6,17 +6,16 @@ import logging
 import bittrex
 
 # self modules
-from api.coinmarketcap import Coinmarketcap
+from api.api import BaseApi
 
-class Bittrex:
+class Bittrex(BaseApi):
     """ wrapper class on top of Bittrex
     Init:
         api_key: string
         api_secret: string
     """
-    def __init__(self, api_key, api_secret):
-        self.__api_key = api_key
-        self.__api_secret = api_secret
+    def __init__(self, key=None, secret=None):
+        super().__init__(key, secret)
 
     def _get_balance(self):
         """ method to get bittrex balances
@@ -31,7 +30,7 @@ class Bittrex:
         logger = logging.getLogger(__name__)
         logger.debug("Retrieving Bittrex account balances...")
 
-        client = bittrex.Bittrex(self.__api_key, self.__api_secret)
+        client = bittrex.Bittrex(self._key, self._secret)
         resp = client.get_balances()
 
         if resp['success']:
@@ -58,27 +57,15 @@ class Bittrex:
 
         return wallet_dict
 
-    def get_wallet_value(self):
-        """ method to get wallet value
-        Args:
-            wallet: list of dict
+    def get_wallet(self):
+        """ method to return whatever is in the wallet
         Returns:
-            wallet_value: float
+            wallet_dict: dict: float e.g.{'ETH':222}
         """
-        # get wallet balance
-        wallet = self. _format_wallet()
+        wallet = self._format_wallet()
+        return wallet
 
-        # get latest prices from coinmarketcap
-        cmc_client = Coinmarketcap()
-        ticker_prices = cmc_client.get_ticker_prices()
 
-        wallet_value = 0.
-
-        for coin, amt in wallet.items():
-            price_usd = float(ticker_prices[coin])
-            wallet_value = wallet_value + (amt * price_usd)
-
-        return wallet_value
 
 
 
