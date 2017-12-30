@@ -24,7 +24,6 @@ def main():
     logger = logging.getLogger(__name__)
     # mute request log
     logging.getLogger("requests").setLevel(logging.WARNING)
-    
 
     # load the api keys
     with open(args.f, 'r') as ymlfile:

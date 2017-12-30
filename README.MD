@@ -26,7 +26,7 @@ python crpyto_portfolio.py -f settings/api_keys.yml
 ## Sample output
 ```bash
 $ python crpyto_portfolio.py -f settings/api_keys.yml
-he API clients available in this package are deprecated and will be no longer available in their current form starting with version 2.0!
+The API clients available in this package are deprecated and will be no longer available in their current form starting with version 2.0!
 2017-12-30 20:16:19,800 - __main__ - INFO - bittrex worth(USD):$20.00
 2017-12-30 20:16:20,287 - __main__ - INFO - bitfinex worth(USD):$20.00
 2017-12-30 20:16:20,971 - __main__ - INFO - coinbase worth(USD):$20.00
