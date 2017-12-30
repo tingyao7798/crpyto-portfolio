@@ -1,3 +1,15 @@
 bittrex:
     api_key: <API_KEY>
     api_secret: <API_SECRET>
+bitfinex:
+    key: <API_KEY>
+    secret: <API_SECRET>
+coinbase:
+    key: API_KEY
+    secret: <API_SECRET>
+etherscan:
+    key: API_KEY
+    account: "<ADDRESS>"
+    contract_address: 
+        - "KNC": "<CONTRACT_ADDRESS>"
+        - "XNN": "<CONTRACT_ADDRESS>"
