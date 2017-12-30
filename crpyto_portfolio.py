@@ -8,7 +8,7 @@ import yaml
 
 # self modules
 from utils.common import setup_logging
-from api import bittrex, bitfinex, coinbase
+from api import bittrex, bitfinex, coinbase, etherscan
 
 
 def main():
@@ -33,17 +33,19 @@ def main():
     # init total wallet
     total_value = 0.
 
-    for exchange, auth in api_keys.items():
-        if exchange == "bittrex":
+    for account, auth in api_keys.items():
+        if account == "bittrex":
             client = bittrex.Bittrex(auth['key'], auth['secret'])
-        elif exchange == "bitfinex":
+        elif account == "bitfinex":
             client = bitfinex.Bitfinex(auth['key'], auth['secret'])
-        elif exchange == "coinbase":
+        elif account == "coinbase":
             client = coinbase.Coinbase(auth['key'], auth['secret'])
+        elif account == "etherscan":
+            client = etherscan.Etherscan(auth['key'], auth['account'], auth['contract_address'])
 
         wallet = client.get_wallet()
         value = client.get_wallet_value(wallet)
-        logger.info("%s worth(USD):$%s" % (exchange, value))
+        logger.info("%s worth(USD):$%s" % (account, value))
         total_value = total_value + value
 
     logger.info("Total crpyto worth(usd):$%s" %total_value)
