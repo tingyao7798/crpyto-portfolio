@@ -36,7 +36,7 @@ class Coinmarketcap:
         logger = logging.getLogger(__name__)
         logger.debug("Retrieving Coinmarketcap tickers...")
         client = coinmarketcap.Market()
-        ticker_resp = client.ticker(limit=300)
+        ticker_resp = client.ticker(limit=500)
 
         return ticker_resp
 

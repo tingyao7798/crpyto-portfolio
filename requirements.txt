@@ -1,3 +1,4 @@
 python-bittrex==0.2.1
 coinmarketcap==4.1.1
 BitEx==1.2.11
+coinbase==2.0.6
