@@ -1,6 +1,6 @@
 bittrex:
-    api_key: <API_KEY>
-    api_secret: <API_SECRET>
+    key: <API_KEY>
+    secret: <API_SECRET>
 bitfinex:
     key: <API_KEY>
     secret: <API_SECRET>
