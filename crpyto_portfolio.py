@@ -31,21 +31,59 @@ def main():
 
     # init total wallet
     total_value = 0.
+    # init cur_address to store already processed eth addresses
 
-    for account, auth in api_keys.items():
-        if account == "bittrex":
+    cur_address = []
+
+    for exchange, auth in api_keys.items():
+        if exchange == "bittrex":
+            # instantiate Bittrex class
             client = bittrex.Bittrex(auth['key'], auth['secret'])
-        elif account == "bitfinex":
-            client = bitfinex.Bitfinex(auth['key'], auth['secret'])
-        elif account == "coinbase":
-            client = coinbase.Coinbase(auth['key'], auth['secret'])
-        elif account == "etherscan":
-            client = etherscan.Etherscan(auth['key'], auth['account'], auth['contract_address'])
 
-        wallet = client.get_wallet()
-        value = client.get_wallet_value(wallet)
-        logger.info("%s worth(USD):$%s" % (account, value))
-        total_value = total_value + value
+            # get wallet value
+            wallet = client.get_wallet()
+            value = client.get_wallet_value(wallet)
+            logger.info("%s worth(USD):$%s" % (exchange, value))
+            total_value = total_value + value
+
+        elif exchange == "bitfinex":
+            # instantiate Bitfinex class
+            client = bitfinex.Bitfinex(auth['key'], auth['secret'])
+
+            # get wallet value
+            wallet = client.get_wallet()
+            value = client.get_wallet_value(wallet)
+            logger.info("%s worth(USD):$%s" % (exchange, value))
+            total_value = total_value + value
+
+        elif exchange == "coinbase":
+            # instantiate Coinbase class
+            client = coinbase.Coinbase(auth['key'], auth['secret'])
+
+            # get wallet value
+            wallet = client.get_wallet()
+            value = client.get_wallet_value(wallet)
+            logger.info("%s worth(USD):$%s" % (exchange, value))
+            total_value = total_value + value
+
+        elif exchange == "etherscan":
+
+            # process each eth address
+            for acc in auth['account']:
+                if acc not in cur_address:
+
+                    # save acc to cur_address
+                    cur_address.append(acc)
+
+                    # instantiate Etherscan class
+                    client = etherscan.Etherscan(auth['key'],
+                                                 acc)
+
+                    # get wallet value
+                    wallet = client.get_wallet()
+                    value = client.get_wallet_value(wallet)
+                    logger.info("Ethereum address %s worth(USD):$%s" % (acc['address'], value))
+                    total_value = total_value + value
 
     logger.info("Total crpyto worth(usd):$%s" %total_value)
 

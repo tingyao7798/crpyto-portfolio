@@ -21,10 +21,13 @@ class Etherscan(BaseApi):
     API_KEY = '&apikey='
     TAG = '&tag='
 
-    def __init__(self, key, account, tokens=None):
+    def __init__(self, key, account):
         self._key = key
-        self.address = str(account)
-        self.tokens = tokens
+        self.address = account['address']
+        if 'contract_address' in account:
+            self.tokens = account['contract_address']
+        else:
+            self.tokens = None
         self.http = requests.session()
 
     def _build_url(self, action, contract_address=None):
@@ -66,15 +69,16 @@ class Etherscan(BaseApi):
 
         # Query etherscan api for erc token balance
         logger.debug("Retrieving ERC20 token balance from Etherscan...")
-        for tok in self.tokens:
-            tok = list(tok.items())[0]
-            url = self._build_url("tokenbalance", tok[1])
-            resp = self.http.get(url)
+        if self.tokens:
+            for tok in self.tokens:
+                tok = list(tok.items())[0]
+                url = self._build_url("tokenbalance", tok[1])
+                resp = self.http.get(url)
 
-            if resp.status_code == 200:
-                wallet[tok[0]] = float(resp.json()['result']) * pow(10, -18)
-            else:
-                logger.error(resp.json()['message'])
+                if resp.status_code == 200:
+                    wallet[tok[0]] = float(resp.json()['result']) * pow(10, -18)
+                else:
+                    logger.error(resp.json()['message'])
 
         return wallet
 
